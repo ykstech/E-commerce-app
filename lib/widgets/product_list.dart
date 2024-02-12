@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app_flutter/global_variables.dart';
 import 'package:shop_app_flutter/widgets/product_card.dart';
 import 'package:shop_app_flutter/pages/product_details_page.dart';
+import 'package:animations/animations.dart';
 
 class ProductList extends StatefulWidget {
   const ProductList({super.key});
@@ -11,9 +12,9 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
- late List<String> filters;
+  late List<String> filters;
   late String selectedFilter;
-  final TextEditingController searchController=TextEditingController();
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -21,7 +22,7 @@ class _ProductListState extends State<ProductList> {
     // Initialize filters with 'All' and unique company names
     filters = ['All', ...getUniqueCompanyNames(products)];
     selectedFilter = filters[0];
-   // searchController = TextEditingController();
+    // searchController = TextEditingController();
   }
 
   // Helper function to get unique company names from the list of products
@@ -44,17 +45,23 @@ class _ProductListState extends State<ProductList> {
           .toList();
     } else if (selectedCompany == 'All') {
       return products
-          .where((product) =>
-              product['title'].toString().toLowerCase().contains(searchText.toLowerCase()))
+          .where((product) => product['title']
+              .toString()
+              .toLowerCase()
+              .contains(searchText.toLowerCase()))
           .toList();
     } else {
       return products
           .where((product) =>
-              product['title'].toString().toLowerCase().contains(searchText.toLowerCase()) &&
+              product['title']
+                  .toString()
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) &&
               product['company'] == selectedCompany)
           .toList();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     const border = OutlineInputBorder(
@@ -78,9 +85,9 @@ class _ProductListState extends State<ProductList> {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
-               Expanded(
+              Expanded(
                 child: TextField(
-                   controller: searchController,
+                  controller: searchController,
                   onChanged: (value) {
                     setState(() {});
                   },
@@ -139,34 +146,34 @@ class _ProductListState extends State<ProductList> {
           Expanded(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                 // Filter products based on selected company
+                // Filter products based on selected company
                 final searchText = searchController.text.toLowerCase();
                 final filteredProducts =
                     filterProducts(searchText, selectedFilter);
 
                 if (constraints.maxWidth > 1080) {
                   return GridView.builder(
-                     itemCount: filteredProducts.length,
+                    itemCount: filteredProducts.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 1.75,
                     ),
                     itemBuilder: (context, index) {
-                     
-                       final product = filteredProducts[index];
+                      final product = filteredProducts[index];
                       return GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) {
-                                return ProductDetailsPage(hid:index.toString(),product: product);
+                                return ProductDetailsPage(
+                                    hid: index.toString(), product: product);
                               },
                             ),
                           );
                         },
                         child: ProductCard(
-                           id:index.toString() as String,
+                          id: index.toString() as String,
                           title: product['title'] as String,
                           price: product['price'] as double,
                           image: product['imageUrl'] as String,
@@ -179,21 +186,36 @@ class _ProductListState extends State<ProductList> {
                   );
                 } else {
                   return ListView.builder(
-                   itemCount: filteredProducts.length,
+                    itemCount: filteredProducts.length,
                     itemBuilder: (context, index) {
                       final product = filteredProducts[index];
                       return GestureDetector(
                         onTap: () {
+                         
                           Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ProductDetailsPage(hid:index.toString(),product: product);
+                            PageRouteBuilder(
+                              transitionDuration:
+                                  const Duration(milliseconds: 500),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return ProductDetailsPage(
+                                    hid: index.toString(), product: product);
+                              },
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return SharedAxisTransition(
+                                  animation: animation,
+                                  secondaryAnimation: secondaryAnimation,
+                                  transitionType:
+                                      SharedAxisTransitionType.scaled,
+                                  child: child,
+                                );
                               },
                             ),
                           );
                         },
                         child: ProductCard(
-                          id:index.toString() as String,
+                          id: index.toString() as String,
                           title: product['title'] as String,
                           price: product['price'] as double,
                           image: product['imageUrl'] as String,
