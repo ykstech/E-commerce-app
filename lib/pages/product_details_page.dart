@@ -71,8 +71,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           const Spacer(flex: 2),
           Container(
             height: 250,
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(245, 247, 249, 1),
+            decoration:const BoxDecoration(
+              color:  Color.fromRGBO(245, 247, 249, 1),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(40),
                 topRight: Radius.circular(40),

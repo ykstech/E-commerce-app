@@ -98,8 +98,8 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           Container(
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(245, 247, 249, 1),
+            decoration:const BoxDecoration(
+              color:  Color.fromRGBO(245, 247, 249, 1),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(40),
                 topRight: Radius.circular(40),
@@ -110,7 +110,7 @@ class _CartPageState extends State<CartPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("\$${total.toStringAsFixed(2)}",
-                    style: TextStyle(
+                    style:const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
                     )),
@@ -119,7 +119,7 @@ class _CartPageState extends State<CartPage> {
                     style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(
                             Theme.of(context).primaryColor)),
-                    child: Text(
+                    child:const Text(
                       "Buy",
                       style: TextStyle(
                         color: Colors.white,

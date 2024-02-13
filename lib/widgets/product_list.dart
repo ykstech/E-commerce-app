@@ -91,7 +91,7 @@ class _ProductListState extends State<ProductList> {
                   onChanged: (value) {
                     setState(() {});
                   },
-                  decoration: InputDecoration(
+                  decoration:const InputDecoration(
                     hintText: 'Search',
                     prefixIcon: Icon(Icons.search),
                     border: border,
